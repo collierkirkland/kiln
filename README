@@ -1,0 +1,109 @@
+# 🔥 Kiln — Fire Your Listings
+
+AI-powered Etsy listing generator for print-on-demand sellers. Connect your Etsy shop, let Claude generate optimized titles, descriptions, and tags from your draft listings, then push them back in one click.
+
+---
+
+## Setup
+
+### 1. Clone & install dependencies
+
+```bash
+# Backend
+cd server
+npm install
+
+# Frontend
+cd ../client
+npm install
+```
+
+### 2. Configure environment
+
+```bash
+cd server
+cp .env.example .env
+```
+
+Edit `.env` and fill in:
+
+| Variable | Where to get it |
+|---|---|
+| `ETSY_API_KEY` | [etsy.com/developers](https://www.etsy.com/developers) → your app → Keystring |
+| `ETSY_API_SECRET` | Same page → Shared Secret |
+| `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) |
+| `SESSION_SECRET` | Any random string |
+
+> **Etsy Callback URL:** When registering your app on Etsy, set the callback URL to:
+> `http://localhost:3001/auth/etsy/callback`
+
+### 3. Run the app
+
+Open two terminals:
+
+```bash
+# Terminal 1 — Backend
+cd server
+npm run dev
+
+# Terminal 2 — Frontend
+cd client
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## How It Works
+
+1. **Connect** your Etsy shop via OAuth
+2. **View** all your draft listings in the queue
+3. **Select** a product template (optional but recommended)
+4. **Generate** — Claude reads the listing title, category, price, and photos and writes a full listing
+5. **Review & edit** the generated title, description, and tags
+6. **Push** back to Etsy with one click
+
+---
+
+## Templates
+
+Templates let you define a consistent description structure per product type (mugs, shirts, totes, etc.) with `[PLACEHOLDERS]` that Claude fills in based on the specific design.
+
+Templates are stored in your browser's localStorage — no server storage needed for the MVP.
+
+---
+
+## Project Structure
+
+```
+kiln/
+├── server/
+│   ├── index.js        # Express server, Etsy OAuth, Claude API
+│   ├── .env.example    # Environment template
+│   └── package.json
+└── client/
+    ├── src/
+    │   ├── App.jsx
+    │   ├── components/
+    │   │   ├── Layout.jsx
+    │   │   └── ListingCard.jsx
+    │   └── pages/
+    │       ├── ConnectPage.jsx
+    │       ├── DashboardPage.jsx
+    │       └── TemplatesPage.jsx
+    ├── index.html
+    ├── vite.config.js
+    └── package.json
+```
+
+---
+
+## Roadmap
+
+- [ ] Bulk generate all drafts at once
+- [ ] Per-template tone/style settings
+- [ ] Usage tracking + freemium limits (Stripe)
+- [ ] Multiple shop support
+- [ ] SEO keyword suggestions
+- [ ] Image analysis for better generation
